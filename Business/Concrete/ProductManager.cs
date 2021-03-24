@@ -30,7 +30,7 @@ namespace Business.Concrete
             _categoryService = categoryService;
         }
 
-        [SecuriedOperation("product.add,admin")]
+        //[SecuriedOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
@@ -50,16 +50,16 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<Product>> GetAll()
         {
-            if (DateTime.Now.Hour==23)
+            if (DateTime.Now.Hour==20)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);
         }
 
-        public IDataResult<List<Product>> GetAllByCategoryId(int id)
+        public IDataResult<List<Product>> GetAllByCategoryId(int categoryId)
         {
-            return  new SuccessDataResult<List<Product>>(_productDal.GetAll(p=>p.CategoryId==id));
+            return  new SuccessDataResult<List<Product>>(_productDal.GetAll(p=>p.CategoryId== categoryId));
         }
 
         [CacheAspect]
